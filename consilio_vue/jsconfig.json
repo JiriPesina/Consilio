@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "esnext",                // moderní cíl
+    "module": "esnext",
+    "baseUrl": ".",                    // od rootu projektu
+    "moduleResolution": "node",
+    "paths": {
+      "@/*": ["src/*"]                // JEDNOHVEZDIČKOVÝ zápis, ne /** 
+    },
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ]
+  },
+  "include": [
+    "src/**/*",                       // aby se načetly všechny .js a .ts
+    "src/**/*.vue"                    // a především .vue soubory
+  ]
+}
+
