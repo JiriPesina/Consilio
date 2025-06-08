@@ -146,9 +146,6 @@ export default {
           username: this.username,
           email: this.email,
           API_Key: this.API_Key,
-          // Aby backend nevyžadoval heslo, můžete v serializeru ignorovat pole 'password'
-          // nebo posílat prázdný řetězec:
-          password: ''
         }
         const response = await axios.put('/api/v1/users/update/', payload)
 
