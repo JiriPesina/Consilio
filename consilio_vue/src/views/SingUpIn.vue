@@ -57,16 +57,13 @@ export default {
   name: 'SignUpIn',
   data() {
     return {
-      // Přihlášení
       username: '',
       password: '',
-      // Registrace
       usernameSingUp: '',
       passwordSingUp: '',
       password2SingUp: '',
       emailSingUp: '',
       API_Key: '',
-      // Chybové zprávy
       errors: []
     }
   },
@@ -78,11 +75,8 @@ export default {
       this.$refs.container.classList.remove('active')
     },
 
-    // ==== Registrace ====
     async submitFormSingUp() {
       this.errors = []
-
-      // Základní validace
       if (!this.usernameSingUp)   this.errors.push('Chybí uživatelské jméno')
       if (!this.passwordSingUp)   this.errors.push('Chybí heslo')
       if (this.passwordSingUp !== this.password2SingUp) this.errors.push('Hesla se neshodují')
@@ -104,13 +98,11 @@ export default {
           toast.success('Účet byl úspěšně vytvořen! Můžete se přihlásit.', {
             autoClose: 3000
           })
-          // Vyčistit formulář
           this.usernameSingUp = ''
           this.passwordSingUp = ''
           this.password2SingUp = ''
           this.emailSingUp = ''
           this.API_Key = ''
-          // Přepnout na přihlášení
           this.activateSignIn()
         } else {
           this.errors.push('Registrace proběhla, ale server nevrátil potvrzení. Zkuste to znovu.')
@@ -118,11 +110,9 @@ export default {
       } catch (error) {
         if (error.response && error.response.data) {
           const data = error.response.data
-          // nejprve non_field_errors
           if (data.non_field_errors) {
             data.non_field_errors.forEach(msg => this.errors.push(msg))
           }
-          // pak ostatní
           for (const prop in data) {
             if (prop === 'non_field_errors') continue
             if (Array.isArray(data[prop])) {
@@ -138,7 +128,6 @@ export default {
       }
     },
 
-    // ==== Přihlášení ====
     async submitForm() {
       this.errors = []
       if (!this.username) this.errors.push('Chybí uživatelské jméno')
@@ -146,26 +135,31 @@ export default {
       if (this.errors.length) return
 
       try {
+        // 1) Přihlášení a získání tokenu
         const response = await axios.post('/api/v1/auth/token/login/', {
           username: this.username,
           password: this.password
         })
         const token = response.data.auth_token
-        // Uložit token a uživatele
+
+        // 2) Uložení do store a sessionStorage
         this.$store.commit('setToken', token)
         this.$store.commit('setUsername', this.username)
         axios.defaults.headers.common['Authorization'] = 'Token ' + token
-        // Přejít na dashboard
+
+        // 3) Načtení detailů přihlášeného uživatele
+        const meRes = await axios.get('/api/v1/users/me/')
+        this.$store.commit('setIsSuperuser', meRes.data.is_superuser)
+        this.$store.commit('setRedmineId', meRes.data.redmine_id)
+
+        // 4) Přesměrování na Dashboard
         this.$router.push({ name: 'Dashboard' })
       } catch (error) {
         if (error.response && error.response.data) {
           const data = error.response.data
-          // Pokud jsou non_field_errors (např. špatné přihlašovací údaje),
-          // zobrazíme vždy českou zprávu
           if (data.non_field_errors) {
             this.errors.push('Zadané údaje nejsou platné')
           } else {
-            // Jiné fieldové chyby
             for (const prop in data) {
               if (Array.isArray(data[prop])) {
                 data[prop].forEach(msg => this.errors.push(`${prop}: ${msg}`))
@@ -182,6 +176,7 @@ export default {
     }
   }
 }
+
 </script>
 
 <style lang="css" scoped src="../assets/LoginStyle.css"></style>

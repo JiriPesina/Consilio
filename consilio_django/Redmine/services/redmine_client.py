@@ -7,7 +7,6 @@ class RedmineClient:
     """
     def __init__(self, api_key: str):
         self.api_key = api_key
-        # nastavíme session pro všechny requesty
         self.session = requests.Session()
         self.session.headers.update({
             "X-Redmine-API-Key": self.api_key,
@@ -23,5 +22,4 @@ class RedmineClient:
         resp = self.session.get(url)
         resp.raise_for_status()
         data = resp.json()
-        # pokud JSON obsahuje klíč s názvem endpoint, vrať ho, jinak celé tělo
         return data.get(endpoint, data)

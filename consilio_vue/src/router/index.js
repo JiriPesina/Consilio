@@ -12,7 +12,7 @@ const routes = [
   },
   {
     path: '/dashboard',
-    name: 'Dashboard',           // <-- změněno z 'dashboard' na 'Dashboard'
+    name: 'Dashboard', 
     component: Dashboard,
     meta: { requiresAuth: true, hideFooter: true }
   },

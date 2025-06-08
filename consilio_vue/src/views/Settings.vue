@@ -1,7 +1,6 @@
 <template>
   <div id="Settings">
     <article id="LoginContent">
-      <!-- ===== BOX PRO ÚDAJE UŽIVATELE ===== -->
       <section id="LoginBox">
         <h4>O vás</h4>
 
@@ -39,7 +38,6 @@
         </div>
       </section>
 
-      <!-- ===== BOX PRO ZMĚNU HESLA ===== -->
       <section id="PasswordBox">
         <h4>Změna hesla</h4>
 
@@ -89,20 +87,13 @@ export default {
   name: 'Settings',
   data() {
     return {
-      // Údaje uživatele
       username: '',
       email: '',
       API_Key: '',
-
-      // Chybové zprávy pro aktualizaci informací
       infoErrors: [],
-
-      // Pole pro změnu hesla
       currentPassword: '',
       newPassword: '',
       confirmNewPassword: '',
-
-      // Chybové zprávy pro změnu hesla
       passwordErrors: []
     }
   },
@@ -111,7 +102,6 @@ export default {
     await this.fetchCurrentUser()
   },
   methods: {
-    // Načte stávající údaje uživatele
     async fetchCurrentUser() {
       try {
         const response = await axios.get('/api/v1/users/me/')
@@ -124,7 +114,6 @@ export default {
       }
     },
 
-    // Aktualizuje základní údaje (bez hesla)
     async submitFormSettings() {
       this.infoErrors = []
 
@@ -177,11 +166,9 @@ export default {
       }
     },
 
-    // Aktualizace hesla: nejprve frontend validace, pak volání backendu
     async submitPasswordChange() {
       this.passwordErrors = []
 
-      // 1) Frontendová validace
       if (!this.currentPassword) {
         this.passwordErrors.push('Aktuální heslo je povinné')
       }
@@ -198,7 +185,6 @@ export default {
         return
       }
 
-      // 2) Odešleme na backend pro ověření aktuálního hesla a uložení nového
       try {
         const payload = {
           current_password: this.currentPassword,
@@ -208,7 +194,6 @@ export default {
 
         if (response.status === 200 && response.data.success) {
           toast.success('Heslo bylo úspěšně změněno')
-          // Vyprázdníme pole
           this.currentPassword = ''
           this.newPassword = ''
           this.confirmNewPassword = ''
@@ -241,98 +226,4 @@ export default {
 }
 </script>
 
-<style scoped>
-#Settings {
-  display: flex;
-  margin: 3% 10% 0 10%;
-  flex-direction: row;
-  color: #FFFFFF;
-  width: 80%;
-}
-
-/* BOX PRO ÚDAJE UŽIVATELE */
-#LoginBox {
-  border: 2px solid #3E3F45;
-  border-radius: 5%;
-  width: 45%;
-  text-align: left;
-  padding: 2% 4%;
-  margin: 3%;
-  display: flex;
-  flex-direction: column;
-}
-
-/* BOX PRO ZMĚNU HESLA */
-#PasswordBox {
-  border: 2px solid #3E3F45;
-  border-radius: 5%;
-  width: 45%;
-  text-align: left;
-  padding: 2% 4%;
-  margin: 3%;
-  display: flex;
-  flex-direction: column;
-}
-
-#LoginContent {
-  text-align: center;
-  margin: 3% 20% 3% 20%;
-  display: flex;
-  flex-direction: row;
-  color: #FFFFFF;
-  width: 100%;
-}
-
-h4 {
-  text-align: center;
-  font-size: 1.6em;
-  margin-bottom: 10px;
-}
-
-h5 {
-  text-align: left;
-  font-size: 1.2em;
-  color: #E5E5E5;
-  margin-bottom: 10px;
-}
-
-h5 input {
-  margin-left: 2%;
-  background-color: #3E3F45;
-  color: #FFFFFF;
-  border: none;
-  padding: 5px;
-  border-radius: 4px;
-  width: 60%;
-}
-
-.button {
-  text-align: center;
-  margin-top: 10px;
-}
-
-button {
-  padding: 8px 16px;
-  font-weight: bold;
-  color: white;
-  background-color: #3E3F45;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #313335;
-}
-
-#ErrorNotification,
-#PasswordErrorNotification {
-  margin-top: 10px;
-  color: #f44336;
-}
-
-#ErrorNotification p,
-#PasswordErrorNotification p {
-  margin: 4px 0;
-}
-</style>
+<style lang="css" scoped src="../assets/Settings.css"></style>

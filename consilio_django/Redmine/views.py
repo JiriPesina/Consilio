@@ -1,5 +1,3 @@
-# Redmine/views.py
-
 import requests
 from rest_framework import permissions, generics, status
 from rest_framework.response import Response
@@ -17,9 +15,7 @@ from .serializers import (
     IssueSerializer
 )
 
-# Importujeme už jen verify_redmine_credentials (verify_api_key už neexistuje)
 from .UserVerification import verify_redmine_credentials
-
 from .models import Project, Issue
 from Redmine.services.project_handler import sync_projects
 from Redmine.services.issue_handler import sync_issues, assign_issue_to_user
@@ -48,20 +44,6 @@ class IssuesList(APIView):
         serializer = IssueSerializer(issues, many=True)
         return Response(serializer.data)
 
-
-# --------- (POZOR) VIEW PRO OVĚŘENÍ API KLÍČE ---------
-# Pokud ho už nepotřebujete, můžete ho zcela smazat. 
-# Ukázka: smažeme api_key_verification, protože už bez username/password nemůžete ověřit klíč.
-
-# @api_view(['POST'])
-# def api_key_verification(request):
-#     api_key = request.data.get('api_key', '')
-#     return Response({'detail': 'Tento endpoint není podporován. Použijte verify_redmine_credentials.'},
-#                     status=status.HTTP_400_BAD_REQUEST)
-
-
-# --------- VIEW PRO SEZNAM A VYTVOŘENÍ UŽIVATELŮ ---------
-
 class UserListView(generics.ListAPIView):
     """
     GET /api/v1/users/
@@ -77,9 +59,6 @@ class UserCreateView(generics.CreateAPIView):
     """
     queryset = User.objects.all()
     serializer_class = UserCreateSerializer
-
-
-# --------- VIEW PRO SYNCHRONIZACI (WorkspaceLoad a assign_tasks) ---------
 
 class WorkspaceLoadView(APIView):
     """
@@ -142,7 +121,6 @@ def assign_tasks(request):
                     'error': str(e)
                 })
 
-    # Po přiřazení zkusíme znovu synchronizovat úlohy
     try:
         sync_issues(api_key)
     except Exception:
@@ -151,23 +129,13 @@ def assign_tasks(request):
     return Response(results, status=status.HTTP_200_OK)
 
 
-# --------- VIEW PRO “UŽIVATEL – MĚ” a “UŽIVATEL – UPDATE” ---------
 
 class UserMeView(APIView):
-    """
-    GET /api/v1/users/me/
-    Vrátí data přihlášeného uživatele: {username, email, API_Key}
-    """
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        user = request.user
-        data = {
-            "username": user.username,
-            "email":    user.email,
-            "API_Key":  user.API_Key
-        }
-        return Response(data, status=status.HTTP_200_OK)
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class UserUpdateView(generics.UpdateAPIView):
@@ -185,7 +153,7 @@ class UserUpdateView(generics.UpdateAPIView):
     def update(self, request, *args, **kwargs):
         instance   = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)  # tady se volá verify_redmine_credentials
+        serializer.is_valid(raise_exception=True) 
         self.perform_update(serializer)
         return Response({"success": True}, status=status.HTTP_200_OK)
 

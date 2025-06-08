@@ -7,8 +7,17 @@
         :key="`proj-${proj.id}`"
         class="card issue-card project-card"
       >
-        <h3>{{ proj.name }} <img v-if="proj.parent_id" :src="ParentIcon" alt="Má rodičovský projekt" class="icon-parent"/></h3>
+        <h3>
+          {{ proj.name }}
+          <img
+            v-if="proj.parent_id"
+            :src="ParentIcon"
+            alt="Má rodičovský projekt"
+            class="icon-parent"
+          />
+        </h3>
         <draggable
+          class="issue-list"
           :list="projectIssues[proj.id]"
           :group="{ name: 'issues', pull: 'clone', put: true }"
           :clone="cloneIssue"
@@ -17,10 +26,7 @@
           @add="onProjectDropBack(proj, $event)"
         >
           <template #item="{ element }">
-            <div
-              class="issue-item"
-              :class="{ assigned: isNewAssignment(element) }"
-            >
+            <div class="issue-item" :class="{ assigned: isNewAssignment(element) }">
               <span
                 class="issue-pill"
                 :style="{ width: (element.completion_percentage || 0) + '%' }"
@@ -47,9 +53,11 @@
         class="card issue-card user-card"
       >
         <h3>{{ user.username }}</h3>
+        <!-- přidána třída drop-area, aby prázdné karty měly plochu pro drop -->
         <draggable
+          class="issue-list drop-area"
           :list="assignments[user.redmine_id]"
-          :group="'issues'"
+          :group="{ name: 'issues', pull: true, put: true }"
           item-key="id"
           @add="onAssign(user, $event)"
           @remove="onUnassign(user, $event)"
@@ -61,12 +69,19 @@
                 :style="{ width: (element.completion_percentage || 0) + '%' }"
               />
               <div class="issue-text">
-                <div class="title">{{ element.name }} <img v-if="element.project_parent_id" :src="ParentIcon" alt="Project má rodiče" class="icon-parent"/></div>
+                <div class="title">
+                  {{ element.name }}
+                  <img
+                    v-if="element.project_parent_id"
+                    :src="ParentIcon"
+                    alt="Project má rodiče"
+                    class="icon-parent"
+                  />
+                </div>
                 <div class="detail">
                   <span class="deadline">{{ formatDate(element.deadline) }}</span>
                 </div>
               </div>
-              <!-- Info ikonka -->
               <img
                 :src="iconInfo"
                 alt="info"
@@ -79,8 +94,9 @@
       </div>
     </div>
 
-    <!-- Slide-up config panel -->
+    <!-- Slide-up config panel, pouze pro superusera -->
     <div
+      v-if="isSuperuser"
       ref="panel"
       class="slide-panel"
       :style="{ top: panelTop + 'px' }"
@@ -136,7 +152,6 @@
 import axios from 'axios'
 import { toast } from 'vue3-toastify'
 import draggable from 'vuedraggable'
-// import ikony z assets
 import iconInfo from '@/assets/IconInfo.png'
 import ParentIcon from '@/assets/IconParent.png'
 
@@ -151,8 +166,8 @@ export default {
 
       selectedProjects: [],
       selectedUsers: [],
-      projectIssues: {},        // { projectId: Issue[] }
-      assignments: {},          // { userRedmineId: Issue[] }
+      projectIssues: {},
+      assignments: {},
 
       panelTop: 0,
       startY: 0,
@@ -166,18 +181,23 @@ export default {
 
       initialized: false,
       saving: false,
-      iconInfo ,
-      ParentIcon 
+      iconInfo,
+      ParentIcon
     }
   },
   computed: {
+    isSuperuser() {
+      return this.$store.state.is_superuser
+    },
+    currentRedmineId() {
+      return this.$store.state.redmine_id
+    },
     selectedProjectsMap() {
       return Object.fromEntries(this.selectedProjects.map(p => [p.id, true]))
     },
     selectedUsersMap() {
       return Object.fromEntries(this.selectedUsers.map(u => [u.redmine_id, true]))
     },
-    // kontrola, jestli je někde nově přiřazené issue
     hasNewAssignments() {
       return Object.values(this.assignments)
         .flat()
@@ -196,22 +216,31 @@ export default {
           axios.get('/api/v1/issues/')
         ])
         this.projects = pRes.data
-        this.users    = uRes.data
-        this.issues   = iRes.data
+        this.users = uRes.data
+        this.issues = iRes.data
 
-        // naplnění projectIssues + původní stav přiřazení
+        // při každém načtení vždy prázdné (slide-panel si uživatel sám vyplní)
+        this.selectedProjects = []
+        this.selectedUsers = []
+
+        // non-superuser vidí od začátku jen svou kartu
+        if (!this.isSuperuser) {
+          const me = this.users.find(u => u.redmine_id === this.currentRedmineId)
+          if (me) this.selectedUsers = [me]
+        }
+
+        // projektové sloupce
         this.projectIssues = {}
         this.issues.forEach(issue => {
           issue.initialAssigned = Boolean(issue.assigned)
           ;(this.projectIssues[issue.project_id] ||= []).push(issue)
         })
 
-        // inicializace assignments
+        // uživatelské karty
         this.assignments = {}
         this.users.forEach(u => {
           this.assignments[u.redmine_id] = []
         })
-        // naplnění původně přiřazených
         this.issues.forEach(issue => {
           if (issue.assigned) {
             const rid = issue.assigned
@@ -237,24 +266,19 @@ export default {
     },
     toggleProject(p) {
       const pid = p.id
-      if (this.selectedProjectsMap[pid]) {
-        this.selectedProjects = this.selectedProjects.filter(x => x.id !== pid)
-      } else {
-        this.selectedProjects.push(p)
-      }
+      this.selectedProjects = this.selectedProjectsMap[pid]
+        ? this.selectedProjects.filter(x => x.id !== pid)
+        : [...this.selectedProjects, p]
     },
     toggleUser(u) {
       const rid = u.redmine_id
-      if (this.selectedUsersMap[rid]) {
-        this.selectedUsers = this.selectedUsers.filter(x => x.redmine_id !== rid)
-      } else {
-        this.selectedUsers.push(u)
-      }
+      this.selectedUsers = this.selectedUsersMap[rid]
+        ? this.selectedUsers.filter(x => x.redmine_id !== rid)
+        : [...this.selectedUsers, u]
     },
     cloneIssue(issue) {
       return { ...issue }
     },
-    // klik na info ikonku
     openIssue(id) {
       window.open(`https://projects.olc.cz/issues/${id}`, '_blank')
     },
@@ -263,7 +287,7 @@ export default {
       moved.assigned_username = user.username
     },
     onUnassign(user, evt) {
-      // vuedraggable odstraní model automaticky
+      // tu můžeš řešit odřazení úkolu zpět na projekt, pokud potřebuješ
     },
     onProjectDropBack(proj, evt) {
       const dropped = evt.clone
@@ -276,9 +300,7 @@ export default {
       return this.isAssigned(element.id) && !element.initialAssigned
     },
     isAssigned(id) {
-      return !!Object.values(this.assignments)
-        .flat()
-        .find(i => i.id === id)
+      return !!Object.values(this.assignments).flat().find(i => i.id === id)
     },
     async saveAssignments() {
       this.saving = true
@@ -292,8 +314,16 @@ export default {
       try {
         const res = await axios.post('/api/v1/assign-tasks/', payload)
         const { success = [], failed = [] } = res.data
-        if (!failed.length) toast.success(`Přiřazení proběhlo úspěšně (${success.length} úkolů).`, { autoClose: 3000 })
-        else toast.error(`Chyba u ${failed.length} úkolů: ` + failed.map(f => `#${f.issue_id}`).join(', '), { autoClose: 5000 })
+        if (!failed.length)
+          toast.success(`Přiřazení proběhlo úspěšně (${success.length} úkolů).`, {
+            autoClose: 3000
+          })
+        else
+          toast.error(
+            `Chyba u ${failed.length} úkolů: ` +
+              failed.map(f => `#${f.issue_id}`).join(', '),
+            { autoClose: 5000 }
+          )
         await this.fetchAll()
       } catch (e) {
         toast.error('Nepodařilo se uložit změny: ' + e.message, { autoClose: 5000 })
@@ -344,165 +374,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.icon-parent {
-  width: 20px;
-  height: 20px;
-  margin-left: 6px;
-  vertical-align: middle;
-}
-.dashboard-container {
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
-}
-.cards-container {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 1rem;
-  overflow-x: auto;
-}
-.card.issue-card {
-  background: #3e3f45;
-  border-radius: 20px;
-  padding: 0.8rem;
-  min-width: 250px;
-  user-select: none;
-}
-.card.issue-card h3 {
-  color: #fff;
-  margin: 0 0 0.5rem 0;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
-  padding-bottom: 0.3rem;
-}
-.issue-item {
-  position: relative;
-  background: #eaeaea;
-  border-radius: 2rem;
-  padding: 0.4rem;
-  margin-bottom: 0.8rem;
-  cursor: grab;
-  overflow: hidden;
-  user-select: none;
-  transition: opacity 0.2s;
-}
-.issue-item.assigned {
-  opacity: 0.5;
-}
-.issue-item.dragging-visible {
-  opacity: 1 !important;
-}
-.issue-pill {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 5px;
-  background: #4caf50;
-}
-.unassigned-dot {
-  position: absolute;
-  bottom: 8px;
-  right: 8px;
-  width: 12px;
-  height: 12px;
-  background: #f44336;
-  border-radius: 50%;
-}
-.assigned-user {
-  margin-left: 5.5rem;
-  font-size: 0.85rem;
-  color: #8d8d8d;
-  font-weight: 500;
-}
-/* Info ikonka */
-.info-icon {
-  position: absolute;
-  bottom: 8px;
-  right: 8px;
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-}
-
-/* Slide Panel Styling */
-.slide-panel {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  background: #3e3f45;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-  z-index: 1000;
-}
-.handle {
-  width: 50px;
-  height: 5px;
-  background: #bbb;
-  border-radius: 3px;
-  margin: 10px auto;
-  cursor: grab;
-}
-.panel-content {
-  flex: 1 1 auto;
-  overflow-y: auto;
-  display: flex;
-  gap: 2rem;
-  padding: 0 20rem;
-}
-.config-section {
-  flex: 1;
-}
-.config-list {
-  max-height: 200px;
-  overflow-y: auto;
-}
-.config-item {
-  padding: 0.6rem;
-  background: #fff;
-  color: #000;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-bottom: 0.5rem;
-}
-.config-item.selected {
-  background: #ffa500;
-  color: #fff;
-}
-
-.title {
-  font-weight: 600;
-  margin-left: 0.3rem;
-}
-.detail .deadline {
-  margin-left: 0.3rem;
-  color: #8d8d8d;
-  font-weight: 500;
-  font-size: 0.85rem;
-}
-
-.panel-header {
-  display: flex;
-  justify-content: flex-end;
-  padding: 0.5rem 1rem;
-  background: #2e3037;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-.btn-save {
-  background: #4caf50;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.btn-save:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-</style>
-
-
+<style lang="css" scoped src="../assets/DashBoard.css"></style>

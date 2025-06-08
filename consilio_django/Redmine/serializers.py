@@ -7,7 +7,6 @@ User = get_user_model()
 
 
 class IssueSerializer(serializers.ModelSerializer):
-    # správný source k parent_id
     project_parent_id = serializers.IntegerField(
         source='project_id.parent_id',
         read_only=True
@@ -46,7 +45,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'redmine_id']
+        fields = ['id', 'username', 'email', 'redmine_id','is_superuser']
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
