@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 class Project(models.Model):
     name = models.CharField(max_length=50)
     createDate = models.DateField()
+    parent_id = models.IntegerField(null=True,blank=True,db_column='Parent_ID',help_text='ID nadřazeného projektu')
    
 
     class Meta:

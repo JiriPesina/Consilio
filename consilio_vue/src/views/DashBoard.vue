@@ -7,7 +7,7 @@
         :key="`proj-${proj.id}`"
         class="card issue-card project-card"
       >
-        <h3>{{ proj.name }}</h3>
+        <h3>{{ proj.name }} <img v-if="proj.parent_id" :src="ParentIcon" alt="Má rodičovský projekt" class="icon-parent"/></h3>
         <draggable
           :list="projectIssues[proj.id]"
           :group="{ name: 'issues', pull: 'clone', put: true }"
@@ -61,7 +61,7 @@
                 :style="{ width: (element.completion_percentage || 0) + '%' }"
               />
               <div class="issue-text">
-                <div class="title">{{ element.name }}</div>
+                <div class="title">{{ element.name }} <img v-if="element.project_parent_id" :src="ParentIcon" alt="Project má rodiče" class="icon-parent"/></div>
                 <div class="detail">
                   <span class="deadline">{{ formatDate(element.deadline) }}</span>
                 </div>
@@ -138,6 +138,7 @@ import { toast } from 'vue3-toastify'
 import draggable from 'vuedraggable'
 // import ikony z assets
 import iconInfo from '@/assets/IconInfo.png'
+import ParentIcon from '@/assets/IconParent.png'
 
 export default {
   name: 'Dashboard',
@@ -165,7 +166,8 @@ export default {
 
       initialized: false,
       saving: false,
-      iconInfo                // aby bylo dostupné v šabloně
+      iconInfo ,
+      ParentIcon 
     }
   },
   computed: {
@@ -343,6 +345,12 @@ export default {
 </script>
 
 <style scoped>
+.icon-parent {
+  width: 20px;
+  height: 20px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
 .dashboard-container {
   display: flex;
   flex-direction: column;

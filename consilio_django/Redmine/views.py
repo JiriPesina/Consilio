@@ -184,7 +184,7 @@ class UserUpdateView(generics.UpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         instance   = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=False)
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)  # tady se volá verify_redmine_credentials
         self.perform_update(serializer)
         return Response({"success": True}, status=status.HTTP_200_OK)

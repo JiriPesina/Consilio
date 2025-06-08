@@ -1,5 +1,6 @@
 <template>
   <div class="container" ref="container">
+    <!-- Registrace -->
     <div class="form-container sign-up">
       <form @submit.prevent="submitFormSingUp">
         <h1>Registrace</h1>
@@ -15,6 +16,7 @@
       </form>
     </div>
 
+    <!-- Přihlášení -->
     <div class="form-container sign-in">
       <form @submit.prevent="submitForm">
         <h1>Přihlášení</h1>
@@ -27,6 +29,7 @@
       </form>
     </div>
 
+    <!-- Přepínač panelů -->
     <div class="toggle-container">
       <div class="toggle">
         <div class="toggle-panel toggle-left">
@@ -74,20 +77,20 @@ export default {
     activateSignIn() {
       this.$refs.container.classList.remove('active')
     },
+
+    // ==== Registrace ====
     async submitFormSingUp() {
       this.errors = []
 
-      // Zkontrolujeme, že uživatel vůbec něco vyplnil
-      if (!this.usernameSingUp) this.errors.push('Chybí uživatelské jméno')
-      if (!this.passwordSingUp) this.errors.push('Chybí heslo')
+      // Základní validace
+      if (!this.usernameSingUp)   this.errors.push('Chybí uživatelské jméno')
+      if (!this.passwordSingUp)   this.errors.push('Chybí heslo')
       if (this.passwordSingUp !== this.password2SingUp) this.errors.push('Hesla se neshodují')
-      if (!this.emailSingUp) this.errors.push('Chybí email')
-      if (!this.API_Key) this.errors.push('Chybí klíč API')
+      if (!this.emailSingUp)      this.errors.push('Chybí email')
+      if (!this.API_Key)          this.errors.push('Chybí klíč API')
       if (this.errors.length) return
 
-      // === Odešleme všechny údaje najednou na backend, Django to ověří v Redmine ===
       try {
-        // 2) Odeslání na backend
         const formData = {
           username: this.usernameSingUp,
           password: this.passwordSingUp,
@@ -95,44 +98,35 @@ export default {
           API_Key:  this.API_Key
         }
 
-        const signupResponse = await axios.post(
-          '/api/v1/users/create/',
-          formData
-        )
+        const signupResponse = await axios.post('/api/v1/users/create/', formData)
 
-        // 3) Úspěch?
         if (signupResponse.status === 201 || signupResponse.data.id) {
           toast.success('Účet byl úspěšně vytvořen! Můžete se přihlásit.', {
             autoClose: 3000
           })
+          // Vyčistit formulář
           this.usernameSingUp = ''
           this.passwordSingUp = ''
           this.password2SingUp = ''
           this.emailSingUp = ''
           this.API_Key = ''
-          // Přepneme na sign-in formulář
+          // Přepnout na přihlášení
           this.activateSignIn()
         } else {
-          this.errors.push(
-            'Registrace proběhla, ale server nevrátil potvrzení. Zkuste to znovu.'
-          )
+          this.errors.push('Registrace proběhla, ale server nevrátil potvrzení. Zkuste to znovu.')
         }
       } catch (error) {
-        // 4) Zpracování chyb z backendu
         if (error.response && error.response.data) {
           const data = error.response.data
-
+          // nejprve non_field_errors
           if (data.non_field_errors) {
-            data.non_field_errors.forEach((msg) => {
-              this.errors.push(msg)
-            })
+            data.non_field_errors.forEach(msg => this.errors.push(msg))
           }
+          // pak ostatní
           for (const prop in data) {
             if (prop === 'non_field_errors') continue
             if (Array.isArray(data[prop])) {
-              data[prop].forEach((msg) => {
-                this.errors.push(`${prop}: ${msg}`)
-              })
+              data[prop].forEach(msg => this.errors.push(`${prop}: ${msg}`))
             } else {
               this.errors.push(`${prop}: ${data[prop]}`)
             }
@@ -143,6 +137,8 @@ export default {
         }
       }
     },
+
+    // ==== Přihlášení ====
     async submitForm() {
       this.errors = []
       if (!this.username) this.errors.push('Chybí uživatelské jméno')
@@ -150,23 +146,33 @@ export default {
       if (this.errors.length) return
 
       try {
-        // Přihlášení
         const response = await axios.post('/api/v1/auth/token/login/', {
           username: this.username,
           password: this.password
         })
         const token = response.data.auth_token
-        // Uložíme do Vuex + sessionStorage
+        // Uložit token a uživatele
         this.$store.commit('setToken', token)
         this.$store.commit('setUsername', this.username)
-        // Nastavíme autorizaci pro budoucí requesty
         axios.defaults.headers.common['Authorization'] = 'Token ' + token
-        // 3. Po přihlášení rovnou na dashboard
+        // Přejít na dashboard
         this.$router.push({ name: 'Dashboard' })
       } catch (error) {
         if (error.response && error.response.data) {
-          for (const prop in error.response.data) {
-            this.errors.push(`${prop}: ${error.response.data[prop]}`)
+          const data = error.response.data
+          // Pokud jsou non_field_errors (např. špatné přihlašovací údaje),
+          // zobrazíme vždy českou zprávu
+          if (data.non_field_errors) {
+            this.errors.push('Zadané údaje nejsou platné')
+          } else {
+            // Jiné fieldové chyby
+            for (const prop in data) {
+              if (Array.isArray(data[prop])) {
+                data[prop].forEach(msg => this.errors.push(`${prop}: ${msg}`))
+              } else {
+                this.errors.push(`${prop}: ${data[prop]}`)
+              }
+            }
           }
         } else {
           this.errors.push('Přihlášení se nezdařilo. Zkuste to znovu.')
@@ -179,3 +185,4 @@ export default {
 </script>
 
 <style lang="css" scoped src="../assets/LoginStyle.css"></style>
+
