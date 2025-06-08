@@ -315,7 +315,7 @@ export default {
         const res = await axios.post('/api/v1/assign-tasks/', payload)
         const { success = [], failed = [] } = res.data
         if (!failed.length)
-          toast.success(`Přiřazení proběhlo úspěšně (${success.length} úkolů).`, {
+          toast.success(`Přiřazení proběhlo úspěšně.`, {
             autoClose: 3000
           })
         else
