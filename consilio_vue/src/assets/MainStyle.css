@@ -1,47 +1,49 @@
 /*General*/
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
 
-
 body {
   font-family: "Roboto", sans-serif;
   background-color: #1B1C21;
   color: black;
-
 }
 
 .my-custom-toast {
-    background-color: green;
-    color: white;
+  background-color: green;
+  color: white;
 }
-.ErrorNotification {
-    margin-top: 0.5em;
- }
+.ErrorNotification {margin-top: 0.5em;}
 
 .ErrorNotification p {
-    color: #9f3a38 !important;
-    margin: 0 !important;
+  color: #9f3a38 !important;
+  margin: 0 !important;
 }
 
 input {
-    background-color: #eee;
-    border: none;
-    margin: 2% 0;
-    padding: 3%;
-    font-size: 14px;
-    border-radius: 1rem;
-    width: 90%;
-    outline: none;
+  background-color: #eee;
+  border: none;
+  margin: 2% 0;
+  padding: 3%;
+  font-size: 14px;
+  border-radius: 1rem;
+  width: 90%;
+  outline: none;
+}
+
+h4 {
+  text-align: center;
+  font-size: 1.2em;
+  color: #E5E5E5;
 }
 /*Header css*/
 header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;     
-    height: 6rem;
-    background-color: #3E3F45;
-    font-family: "Roboto", sans-serif;
-    z-index: 1000;  
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;     
+  height: 6rem;
+  background-color: #3E3F45;
+  font-family: "Roboto", sans-serif;
+  z-index: 1000;  
 }
 #Header-Content{
   display: flex;
@@ -54,18 +56,7 @@ header {
   padding-top: 0.5%;
   text-align: justify;
 }
-/*
-#SingUp{
-  width: 10%;
-  padding-top: 0.5%;
-  margin: 0;
-  }
 
-#SingUp img {
-  height: 7%;
-  width: auto;
-}
-*/
 #User {
   display: flex;
   flex-direction: row;
@@ -84,14 +75,13 @@ header {
 
 
 /* Navigation*/
-.router-link-active {
-  border-bottom: 4px solid #ce962f ;
-}
+.router-link-active {border-bottom: 4px solid #ce962f ;}
 
 a {
   text-decoration: none;
   color: black;
 }
+
 ul { 
   list-style: none;
   display: flex;
@@ -106,7 +96,7 @@ li {
   text-decoration: none;
   cursor: pointer ;}
 
-li:hover { border-bottom: 4px solid #ce962f ;}
+li:hover {border-bottom: 4px solid #ce962f ;}
 
 #navigation {
   width: 90%;
@@ -124,8 +114,9 @@ li:hover { border-bottom: 4px solid #ce962f ;}
 }
 .cards-container {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
-  overflow-x: auto;
+  justify-content: flex-start;
 }
 
 .card.issue-card {
@@ -154,12 +145,10 @@ li:hover { border-bottom: 4px solid #ce962f ;}
   user-select: none;
   transition: opacity 0.2s;
 }
-.issue-item.assigned {
-  opacity: 0.5;
-}
-.issue-item.dragging-visible {
-  opacity: 1 !important;
-}
+.issue-item.assigned {opacity: 0.5;}
+
+.issue-item.dragging-visible {opacity: 1 !important;}
+
 .issue-pill {
   position: absolute;
   top: 0;
@@ -167,6 +156,7 @@ li:hover { border-bottom: 4px solid #ce962f ;}
   height: 12%;
   background: #4caf50;
 }
+
 .unassigned-dot {
   position: absolute;
   bottom: 2%;
@@ -176,6 +166,7 @@ li:hover { border-bottom: 4px solid #ce962f ;}
   background: #a7281e;
   border-radius: 50%;
 }
+
 .assigned-user {
   margin-left: 5.5rem;
   font-size: 0.85rem;
@@ -184,11 +175,11 @@ li:hover { border-bottom: 4px solid #ce962f ;}
 }
 
 .info-icon {
-    position: absolute;
-    bottom: 10%;
-    right: 10%;
-    width: 9%;
-    cursor: pointer;
+  position: absolute;
+  bottom: 10%;
+  right: 10%;
+  width: 9%;
+  cursor: pointer;
 }
 
 .slide-panel {
@@ -205,12 +196,12 @@ li:hover { border-bottom: 4px solid #ce962f ;}
 }
 
 .handle {
-    width: 10rem;
-    height: 0.4rem;
-    background: #bbb;
-    border-radius: 3rem;
-    margin: 10px auto;
-    cursor: grab;
+  width: 10rem;
+  height: 0.4rem;
+  background: #bbb;
+  border-radius: 3rem;
+  margin: 10px auto;
+  cursor: grab;
 }
 
 .panel-content {
@@ -218,13 +209,15 @@ li:hover { border-bottom: 4px solid #ce962f ;}
   overflow-y: auto;
   display: flex;
   gap: 2rem;
-  padding: 0 20rem;
+  padding: 0 2rem;
 }
-.config-section {
-  flex: 1;
-}
+.config-section {flex: 1;}
 .config-list {
   overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  justify-content: flex-start;
 }
 .config-item {
   padding: 0.7rem;
@@ -233,6 +226,7 @@ li:hover { border-bottom: 4px solid #ce962f ;}
   border-radius: 2rem;
   cursor: pointer;
   margin-bottom: 0.5rem;
+  width: 29%;
 }
 .config-item.selected {
   background: #ffa500;
@@ -269,9 +263,7 @@ li:hover { border-bottom: 4px solid #ce962f ;}
   opacity: 0.6;
   cursor: not-allowed;
 }
-.drop-area {
-  min-height: 80px;
-}
+.drop-area {min-height: 80px;}
 
 /*Settings*/
 #Settings {
@@ -297,114 +289,99 @@ li:hover { border-bottom: 4px solid #ce962f ;}
     gap: 10%;
 }
 
-
-h4 {
-  text-align: left;
-  font-size: 1.2em;
-  color: #E5E5E5;
-}
-
-#ErrorNotification,
-#PasswordErrorNotification {
+#ErrorNotification, #PasswordErrorNotification {
   margin-top: 10px;
   color: #f44336;
 }
 
-#ErrorNotification p,
-#PasswordErrorNotification p {
-  margin: 4px 0;
-}
+#ErrorNotification p, #PasswordErrorNotification p {margin: 4px 0;}
 
 /* SingUpIn style */
   
 .SingUpIn-Container {
-    background-color: #3E3F45;
-    border-radius: 3rem;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
-    position: relative;
-    overflow: hidden;
-    width: 45%;
-    height: 35rem;
-    margin: 12.3% auto;
+  background-color: #3E3F45;
+  border-radius: 3rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+  position: relative;
+  overflow: hidden;
+  width: 45%;
+  height: 35rem;
+  margin: 12.3% auto;
 }
 
 .SingUpIn-Container p{
-    font-size: 14px;
-    line-height: 20px;
-    letter-spacing: 0.3px;
-    margin: 20px 0;
-    color:#eee
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.3px;
+  margin: 20px 0;
+  color:#eee
 }
 
-.SingUpIn-Container span{
-    font-size: 12px;
-}
+.SingUpIn-Container span{font-size: 12px;}
 
 .SingUpIn-Container a{
-    color: #333;
-    font-size: 13px;
-    text-decoration: none;
-    margin: 15px 0 10px;
+  color: #333;
+  font-size: 13px;
+  text-decoration: none;
+  margin: 15px 0 10px;
 }
 
 button {
-    background-color: #ce962f;
-    color: #fff;
-    font-size: 13px;
-    padding: 3% 10%;
-    border: 1px solid transparent;
-    border-radius: 1rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    margin-top: 1rem;
-    cursor: pointer;
+  background-color: #ce962f;
+  color: #fff;
+  font-size: 13px;
+  padding: 3% 10%;
+  border: 1px solid transparent;
+  border-radius: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 1rem;
+  cursor: pointer;
 }
 
 button.hidden{
-    background-color: transparent;
-    border-color: #fff;
+  background-color: transparent;
+  border-color: #fff;
 }
 
 .SingUpIn-Container form{
-    background-color: #3E3F45;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 0 40px;
-    height: 100%;
+  background-color: #3E3F45;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 40px;
+  height: 100%;
 }
 
 
 .form-container{
-    position: absolute;
-    top: 0;
-    height: 100%;
-    transition: all 0.6s ease-in-out;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  transition: all 0.6s ease-in-out;
 }
 
 .sign-in{
-    left: 0;
-    width: 50%;
-    z-index: 2;
+  left: 0;
+  width: 50%;
+  z-index: 2;
 }
 
-.SingUpIn-Container.active .sign-in{
-    transform: translateX(100%);
-}
+.SingUpIn-Container.active .sign-in{transform: translateX(100%);}
 
 .sign-up{
-    left: 0;
-    width: 50%;
-    opacity: 0;
-    z-index: 1;
+  left: 0;
+  width: 50%;
+  opacity: 0;
+  z-index: 1;
 }
 
 .SingUpIn-Container.active .sign-up{
-    transform: translateX(100%);
-    opacity: 1;
-    z-index: 5;
-    animation: move 0.6s;
+  transform: translateX(100%);
+  opacity: 1;
+  z-index: 5;
+  animation: move 0.6s;
 }
 
 @keyframes move{
@@ -419,67 +396,59 @@ button.hidden{
 }
 
 .toggle-container{
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 50%;
-    height: 100%;
-    overflow: hidden;
-    transition: all 0.6s ease-in-out;
-    border-radius: 150px 0 0 100px;
-    z-index: 1000;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: all 0.6s ease-in-out;
+  border-radius: 150px 0 0 100px;
+  z-index: 1000;
 }
 
 .SingUpIn-Container.active .toggle-container{
-    transform: translateX(-100%);
-    border-radius: 0 150px 100px 0;
+  transform: translateX(-100%);
+  border-radius: 0 150px 100px 0;
 }
 
 .toggle{
-    background-color: #cca762;
-    height: 100%;
-    background: linear-gradient(to right, #ce962f, #ce962f);
-    color: #fff;
-    position: relative;
-    left: -100%;
-    height: 100%;
-    width: 200%;
-    transform: translateX(0);
-    transition: all 0.6s ease-in-out;
+  background-color: #cca762;
+  height: 100%;
+  background: linear-gradient(to right, #ce962f, #ce962f);
+  color: #fff;
+  position: relative;
+  left: -100%;
+  height: 100%;
+  width: 200%;
+  transform: translateX(0);
+  transition: all 0.6s ease-in-out;
 }
 
-.SingUpIn-Container.active .toggle{
-    transform: translateX(50%);
-}
+.SingUpIn-Container.active .toggle{transform: translateX(50%);}
 
 .toggle-panel{
-    position: absolute;
-    width: 50%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 0 30px;
-    text-align: center;
-    top: 0;
-    transform: translateX(0);
-    transition: all 0.6s ease-in-out;
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 30px;
+  text-align: center;
+  top: 0;
+  transform: translateX(0);
+  transition: all 0.6s ease-in-out;
 }
 
-.toggle-left{
-    transform: translateX(-200%);
-}
+.toggle-left{transform: translateX(-200%);}
 
-.SingUpIn-Container.active .toggle-left{
-    transform: translateX(0);
-}
+.SingUpIn-Container.active .toggle-left{transform: translateX(0);}
 
 .toggle-right{
-    right: 0;
-    transform: translateX(0);
+  right: 0;
+  transform: translateX(0);
 }
 
-.SingUpIn-Container.active .toggle-right{
-    transform: translateX(200%);
-}
+.SingUpIn-Container.active .toggle-right{transform: translateX(200%);}
