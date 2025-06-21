@@ -2,17 +2,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
 
 body {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Roboto", sans-serif;
   margin: 0;
   background-color: #1B1C21;
   color: black;
 }
 
-header{
-  background-color: #3E3F45;
-  font-family: "Roboto" , sans-serif;
-  height: 26mm;
-  width: 80;
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;     
+    height: 26mm;
+    background-color: #3E3F45;
+    font-family: "Roboto", sans-serif;
+    z-index: 1000;  
 }
 
 footer{
@@ -101,12 +105,467 @@ li:hover { border-bottom: 4px solid #ce962f ;}
 
 #navigation {
   width: 87%;
-  margin-top: 1%;
+  margin-top: 2%;
 }
 
+/* SingUpIn style */
 
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.my-custom-toast {
+    background-color: green;
+    color: white;
+    /* Přidejte zde další potřebné styly */
+}
+.ErrorNotification {
+    margin-top: 0.5em;
+ }
 
+.ErrorNotification p {
+    color: #9f3a38 !important;
+    margin: 0 !important;
+}
+  
+.container {
+    background-color: #3E3F45;
+    border-radius: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    position: relative;
+    overflow: hidden;
+    width: 800px;
+    max-width: 100%;
+    min-height: 550px;
+    margin: 4.7% auto;
+  
+  
+}
 
+body {
+    display: flex;
+    justify-content: center; 
+    flex-direction: column;
+    height: 60vh; 
+}
 
+.container p{
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.3px;
+    margin: 20px 0;
+    color:#eee
+}
 
+.container span{
+    font-size: 12px;
+}
 
+.container a{
+    color: #333;
+    font-size: 13px;
+    text-decoration: none;
+    margin: 15px 0 10px;
+}
+
+.container button{
+    background-color: #ce962f;
+    color: #fff;
+    font-size: 12px;
+    padding: 10px 45px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.container button.hidden{
+    background-color: transparent;
+    border-color: #fff;
+}
+
+.container form{
+    background-color: #3E3F45;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    height: 100%;
+}
+
+.container input{
+    background-color: #eee;
+    border: none;
+    margin: 8px 0;
+    padding: 10px 15px;
+    font-size: 13px;
+    border-radius: 8px;
+    width: 100%;
+    outline: none;
+}
+
+.form-container{
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+}
+
+.sign-in{
+    left: 0;
+    width: 50%;
+    z-index: 2;
+}
+
+.container.active .sign-in{
+    transform: translateX(100%);
+}
+
+.sign-up{
+    left: 0;
+    width: 50%;
+    opacity: 0;
+    z-index: 1;
+}
+
+.container.active .sign-up{
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+    animation: move 0.6s;
+}
+
+@keyframes move{
+    0%, 49.99%{
+        opacity: 0;
+        z-index: 1;
+    }
+    50%, 100%{
+        opacity: 1;
+        z-index: 5;
+    }
+}
+
+.toggle-container{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: all 0.6s ease-in-out;
+    border-radius: 150px 0 0 100px;
+    z-index: 1000;
+}
+
+.container.active .toggle-container{
+    transform: translateX(-100%);
+    border-radius: 0 150px 100px 0;
+}
+
+.toggle{
+    background-color: #cca762;
+    height: 100%;
+    background: linear-gradient(to right, #ce962f, #ce962f);
+    color: #fff;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: all 0.6s ease-in-out;
+}
+
+.container.active .toggle{
+    transform: translateX(50%);
+}
+
+.toggle-panel{
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 30px;
+    text-align: center;
+    top: 0;
+    transform: translateX(0);
+    transition: all 0.6s ease-in-out;
+}
+
+.toggle-left{
+    transform: translateX(-200%);
+}
+
+.container.active .toggle-left{
+    transform: translateX(0);
+}
+
+.toggle-right{
+    right: 0;
+    transform: translateX(0);
+}
+
+.container.active .toggle-right{
+    transform: translateX(200%);
+}
+
+/*Dasboard*/
+
+.icon-parent {
+  width: 20px;
+  height: 20px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+.cards-container {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  overflow-x: auto;
+}
+.card.issue-card {
+  background: #3e3f45;
+  border-radius: 20px;
+  padding: 0.8rem;
+  min-width: 250px;
+  user-select: none;
+}
+.card.issue-card h3 {
+  color: #fff;
+  margin: 0 0 0.5rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  padding-bottom: 0.3rem;
+}
+.issue-item {
+  position: relative;
+  background: #eaeaea;
+  border-radius: 2rem;
+  padding: 0.4rem;
+  margin-bottom: 0.8rem;
+  cursor: grab;
+  overflow: hidden;
+  user-select: none;
+  transition: opacity 0.2s;
+}
+.issue-item.assigned {
+  opacity: 0.5;
+}
+.issue-item.dragging-visible {
+  opacity: 1 !important;
+}
+.issue-pill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 5px;
+  background: #4caf50;
+}
+.unassigned-dot {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 12px;
+  height: 12px;
+  background: #f44336;
+  border-radius: 50%;
+}
+.assigned-user {
+  margin-left: 5.5rem;
+  font-size: 0.85rem;
+  color: #8d8d8d;
+  font-weight: 500;
+}
+/* Info ikonka */
+.info-icon {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+/* Slide Panel Styling */
+.slide-panel {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #3e3f45;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  z-index: 1000;
+}
+.handle {
+  width: 50px;
+  height: 5px;
+  background: #bbb;
+  border-radius: 3px;
+  margin: 10px auto;
+  cursor: grab;
+}
+.panel-content {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  display: flex;
+  gap: 2rem;
+  padding: 0 20rem;
+}
+.config-section {
+  flex: 1;
+}
+.config-list {
+  max-height: 200px;
+  overflow-y: auto;
+}
+.config-item {
+  padding: 0.6rem;
+  background: #fff;
+  color: #000;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+}
+.config-item.selected {
+  background: #ffa500;
+  color: #fff;
+}
+
+.title {
+  font-weight: 600;
+  margin-left: 0.3rem;
+}
+.detail .deadline {
+  margin-left: 0.3rem;
+  color: #8d8d8d;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.5rem 1rem;
+  background: #2e3037;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.btn-save {
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.btn-save:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.drop-area {
+  min-height: 80px;
+}
+
+/*Settings*/
+
+#Settings {
+  display: flex;
+  flex-direction: row;
+  color: #FFFFFF;
+}
+
+#LoginBox {
+  border: 2px solid #3E3F45;
+  border-radius: 5%;
+  width: 50%;
+  text-align: left;
+  padding: 2% 4%;
+  display: flex;
+  flex-direction: column;
+}
+
+#PasswordBox {
+  border: 2px solid #3E3F45;
+  border-radius: 5%;
+  width: 50%;
+  text-align: left;
+  padding: 2% 4%;
+  display: flex;
+  flex-direction: column;
+}
+
+#LoginContent {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  color: #FFFFFF;
+  width: 100%;
+}
+
+h4 {
+  text-align: center;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+h5 {
+  text-align: left;
+  font-size: 1.2em;
+  color: #E5E5E5;
+  margin-bottom: 10px;
+}
+
+h5 input {
+  margin-left: 2%;
+  background-color: #3E3F45;
+  color: #FFFFFF;
+  border: none;
+  padding: 5px;
+  border-radius: 4px;
+  width: 50%;
+}
+
+.button {
+  text-align: center;
+  margin-top: 10px;
+}
+
+button {
+  padding: 8px 16px;
+  font-weight: bold;
+  color: white;
+  background-color: #3E3F45;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #313335;
+}
+
+#ErrorNotification,
+#PasswordErrorNotification {
+  margin-top: 10px;
+  color: #f44336;
+}
+
+#ErrorNotification p,
+#PasswordErrorNotification p {
+  margin: 4px 0;
+}

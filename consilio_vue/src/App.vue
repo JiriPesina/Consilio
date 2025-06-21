@@ -53,7 +53,5 @@ export default {
 }
 </script>
 
-<style lang="css" src="../src/assets/MainStyle.css"></style>
-
 
 

@@ -179,5 +179,4 @@ export default {
 
 </script>
 
-<style lang="css" scoped src="../assets/LoginStyle.css"></style>
 

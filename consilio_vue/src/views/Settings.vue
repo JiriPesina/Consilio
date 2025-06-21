@@ -2,7 +2,6 @@
   <div id="Settings">
     <article id="LoginContent">
       <section id="LoginBox">
-        <h4>O vás</h4>
 
         <h5>
           Uživatelské jméno:
@@ -39,7 +38,6 @@
       </section>
 
       <section id="PasswordBox">
-        <h4>Změna hesla</h4>
 
         <h5>
           Aktuální heslo:
@@ -58,7 +56,7 @@
           />
         </h5>
         <h5>
-          Potvrzení nového hesla:
+          Potvrzení hesla:
           <input
             type="password"
             v-model="confirmNewPassword"
@@ -225,5 +223,3 @@ export default {
   }
 }
 </script>
-
-<style lang="css" scoped src="../assets/Settings.css"></style>

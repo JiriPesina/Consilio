@@ -374,4 +374,4 @@ export default {
 }
 </script>
 
-<style lang="css" scoped src="../assets/DashBoard.css"></style>
+
