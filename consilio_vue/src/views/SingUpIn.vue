@@ -1,5 +1,5 @@
 <template>
-  <div class="container" ref="container">
+  <div class="SingUpIn-Container" ref="container">
     <!-- Registrace -->
     <div class="form-container sign-up">
       <form @submit.prevent="submitFormSingUp">
@@ -40,7 +40,7 @@
 
         <div class="toggle-panel toggle-right">
           <h1>Vítejte!</h1>
-          <p>Pro poskytnutí všech funkcí vložte údaje</p>
+          <p>Zaregistrujte se pomocí Redmine údajů</p>
           <button class="hidden" @click="activateSignUp">Registrovat se</button>
         </div>
       </div>
@@ -105,7 +105,7 @@ export default {
           this.API_Key = ''
           this.activateSignIn()
         } else {
-          this.errors.push('Registrace proběhla, ale server nevrátil potvrzení. Zkuste to znovu.')
+          this.errors.push('Server nevrátil potvrzení. Zkuste to znovu.')
         }
       } catch (error) {
         if (error.response && error.response.data) {

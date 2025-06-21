@@ -1,32 +1,32 @@
 <template>
   <div id="Settings">
     <article id="LoginContent">
-      <section id="LoginBox">
+      <section class="SettingBox">
 
-        <h5>
-          Uživatelské jméno:
+        <h4>
+          Uživatelské jméno
           <input
             type="text"
             v-model="username"
             placeholder="Zadejte nové uživatelské jméno"
           />
-        </h5>
-        <h5>
-          E-mail:
+        </h4>
+        <h4>
+          E-mail
           <input
             type="email"
             v-model="email"
             placeholder="Zadejte nový e-mail"
           />
-        </h5>
-        <h5>
-          Klíč API:
+        </h4>
+        <h4>
+          Klíč API
           <input
             type="text"
             v-model="API_Key"
             placeholder="Zadejte svůj Redmine API klíč"
           />
-        </h5>
+        </h4>
 
         <div class="button">
           <button @click="submitFormSettings">Uložit změny</button>
@@ -37,32 +37,32 @@
         </div>
       </section>
 
-      <section id="PasswordBox">
+      <section class="SettingBox">
 
-        <h5>
-          Aktuální heslo:
+        <h4>
+          Aktuální heslo
           <input
             type="password"
             v-model="currentPassword"
             placeholder="Zadejte aktuální heslo"
           />
-        </h5>
-        <h5>
-          Nové heslo:
+        </h4>
+        <h4>
+          Nové heslo
           <input
             type="password"
             v-model="newPassword"
             placeholder="Zadejte nové heslo"
           />
-        </h5>
-        <h5>
-          Potvrzení hesla:
+        </h4>
+        <h4>
+          Potvrzení hesla
           <input
             type="password"
             v-model="confirmNewPassword"
             placeholder="Potvrďte nové heslo"
           />
-        </h5>
+        </h4>
 
         <div class="button">
           <button @click="submitPasswordChange">Aktualizovat heslo</button>

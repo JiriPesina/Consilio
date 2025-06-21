@@ -1,43 +1,48 @@
 /*General*/
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
 
+
 body {
   font-family: "Roboto", sans-serif;
-  margin: 0;
   background-color: #1B1C21;
   color: black;
+
 }
 
+.my-custom-toast {
+    background-color: green;
+    color: white;
+}
+.ErrorNotification {
+    margin-top: 0.5em;
+ }
+
+.ErrorNotification p {
+    color: #9f3a38 !important;
+    margin: 0 !important;
+}
+
+input {
+    background-color: #eee;
+    border: none;
+    margin: 2% 0;
+    padding: 3%;
+    font-size: 14px;
+    border-radius: 1rem;
+    width: 90%;
+    outline: none;
+}
+/*Header css*/
 header {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;     
-    height: 26mm;
+    height: 6rem;
     background-color: #3E3F45;
     font-family: "Roboto", sans-serif;
     z-index: 1000;  
 }
-
-footer{
-  background-color: #3E3F45;
-  font-family: "Roboto" , sans-serif;
-  height: auto;
-  
-}
-a {
-  text-decoration: none;
-  color: black;
-}
-
-p{
-  font-size : 1.1em;
-  color:#C7C7C7;
-}
-h2 {
-  font-size : 1.7em;
-}
-/*Header css*/
 #Header-Content{
   display: flex;
   flex-direction: row;
@@ -49,7 +54,7 @@ h2 {
   padding-top: 0.5%;
   text-align: justify;
 }
-
+/*
 #SingUp{
   width: 10%;
   padding-top: 0.5%;
@@ -60,7 +65,7 @@ h2 {
   height: 7%;
   width: auto;
 }
-
+*/
 #User {
   display: flex;
   flex-direction: row;
@@ -68,13 +73,13 @@ h2 {
 #User p {
   font-size : 1.3em;
   padding: 0;
-  margin-right: 5px;
+  margin-right: 1rem;
   color: black;
 }
 
 #User img{
-  height: 30px;
-  padding-top: 0.5%;
+  height: 2rem;
+  padding-top: 10%;
 }
 
 
@@ -104,251 +109,40 @@ li {
 li:hover { border-bottom: 4px solid #ce962f ;}
 
 #navigation {
-  width: 87%;
+  width: 90%;
   margin-top: 2%;
-}
-
-/* SingUpIn style */
-
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-.my-custom-toast {
-    background-color: green;
-    color: white;
-    /* Přidejte zde další potřebné styly */
-}
-.ErrorNotification {
-    margin-top: 0.5em;
- }
-
-.ErrorNotification p {
-    color: #9f3a38 !important;
-    margin: 0 !important;
-}
-  
-.container {
-    background-color: #3E3F45;
-    border-radius: 30px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
-    position: relative;
-    overflow: hidden;
-    width: 800px;
-    max-width: 100%;
-    min-height: 550px;
-    margin: 4.7% auto;
-  
-  
-}
-
-body {
-    display: flex;
-    justify-content: center; 
-    flex-direction: column;
-    height: 60vh; 
-}
-
-.container p{
-    font-size: 14px;
-    line-height: 20px;
-    letter-spacing: 0.3px;
-    margin: 20px 0;
-    color:#eee
-}
-
-.container span{
-    font-size: 12px;
-}
-
-.container a{
-    color: #333;
-    font-size: 13px;
-    text-decoration: none;
-    margin: 15px 0 10px;
-}
-
-.container button{
-    background-color: #ce962f;
-    color: #fff;
-    font-size: 12px;
-    padding: 10px 45px;
-    border: 1px solid transparent;
-    border-radius: 8px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    margin-top: 10px;
-    cursor: pointer;
-}
-
-.container button.hidden{
-    background-color: transparent;
-    border-color: #fff;
-}
-
-.container form{
-    background-color: #3E3F45;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 0 40px;
-    height: 100%;
-}
-
-.container input{
-    background-color: #eee;
-    border: none;
-    margin: 8px 0;
-    padding: 10px 15px;
-    font-size: 13px;
-    border-radius: 8px;
-    width: 100%;
-    outline: none;
-}
-
-.form-container{
-    position: absolute;
-    top: 0;
-    height: 100%;
-    transition: all 0.6s ease-in-out;
-}
-
-.sign-in{
-    left: 0;
-    width: 50%;
-    z-index: 2;
-}
-
-.container.active .sign-in{
-    transform: translateX(100%);
-}
-
-.sign-up{
-    left: 0;
-    width: 50%;
-    opacity: 0;
-    z-index: 1;
-}
-
-.container.active .sign-up{
-    transform: translateX(100%);
-    opacity: 1;
-    z-index: 5;
-    animation: move 0.6s;
-}
-
-@keyframes move{
-    0%, 49.99%{
-        opacity: 0;
-        z-index: 1;
-    }
-    50%, 100%{
-        opacity: 1;
-        z-index: 5;
-    }
-}
-
-.toggle-container{
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 50%;
-    height: 100%;
-    overflow: hidden;
-    transition: all 0.6s ease-in-out;
-    border-radius: 150px 0 0 100px;
-    z-index: 1000;
-}
-
-.container.active .toggle-container{
-    transform: translateX(-100%);
-    border-radius: 0 150px 100px 0;
-}
-
-.toggle{
-    background-color: #cca762;
-    height: 100%;
-    background: linear-gradient(to right, #ce962f, #ce962f);
-    color: #fff;
-    position: relative;
-    left: -100%;
-    height: 100%;
-    width: 200%;
-    transform: translateX(0);
-    transition: all 0.6s ease-in-out;
-}
-
-.container.active .toggle{
-    transform: translateX(50%);
-}
-
-.toggle-panel{
-    position: absolute;
-    width: 50%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 0 30px;
-    text-align: center;
-    top: 0;
-    transform: translateX(0);
-    transition: all 0.6s ease-in-out;
-}
-
-.toggle-left{
-    transform: translateX(-200%);
-}
-
-.container.active .toggle-left{
-    transform: translateX(0);
-}
-
-.toggle-right{
-    right: 0;
-    transform: translateX(0);
-}
-
-.container.active .toggle-right{
-    transform: translateX(200%);
 }
 
 /*Dasboard*/
 
 .icon-parent {
-  width: 20px;
-  height: 20px;
-  margin-left: 6px;
+  width: 8%;
   vertical-align: middle;
 }
 .dashboard-container {
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
+  margin: 6% 4.4%
 }
 .cards-container {
   display: flex;
-  flex-wrap: nowrap;
   gap: 1rem;
   overflow-x: auto;
 }
+
 .card.issue-card {
   background: #3e3f45;
-  border-radius: 20px;
-  padding: 0.8rem;
-  min-width: 250px;
+  border-radius: 1.5rem;
+  padding: 1rem;
+  width: 14%;
   user-select: none;
 }
+
 .card.issue-card h3 {
   color: #fff;
   margin: 0 0 0.5rem 0;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
+  border-bottom: 2px solid rgba(255,255,255,0.2);
   padding-bottom: 0.3rem;
 }
+
 .issue-item {
   position: relative;
   background: #eaeaea;
@@ -370,16 +164,16 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  height: 5px;
+  height: 12%;
   background: #4caf50;
 }
 .unassigned-dot {
   position: absolute;
-  bottom: 8px;
-  right: 8px;
-  width: 12px;
-  height: 12px;
-  background: #f44336;
+  bottom: 2%;
+  right: -2%;
+  width: 3rem;
+  height: 3rem;
+  background: #a7281e;
   border-radius: 50%;
 }
 .assigned-user {
@@ -388,38 +182,37 @@ body {
   color: #8d8d8d;
   font-weight: 500;
 }
-/* Info ikonka */
+
 .info-icon {
-  position: absolute;
-  bottom: 8px;
-  right: 8px;
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
+    position: absolute;
+    bottom: 10%;
+    right: 10%;
+    width: 9%;
+    cursor: pointer;
 }
 
-/* Slide Panel Styling */
 .slide-panel {
   position: fixed;
+  margin-top: 3%;                
   left: 0;
   right: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  bottom: 0;               
   background: #3e3f45;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+  overflow: hidden;
   z-index: 1000;
 }
+
 .handle {
-  width: 50px;
-  height: 5px;
-  background: #bbb;
-  border-radius: 3px;
-  margin: 10px auto;
-  cursor: grab;
+    width: 10rem;
+    height: 0.4rem;
+    background: #bbb;
+    border-radius: 3rem;
+    margin: 10px auto;
+    cursor: grab;
 }
+
 .panel-content {
   flex: 1 1 auto;
   overflow-y: auto;
@@ -431,14 +224,13 @@ body {
   flex: 1;
 }
 .config-list {
-  max-height: 200px;
   overflow-y: auto;
 }
 .config-item {
-  padding: 0.6rem;
+  padding: 0.7rem;
   background: #fff;
   color: #000;
-  border-radius: 6px;
+  border-radius: 2rem;
   cursor: pointer;
   margin-bottom: 0.5rem;
 }
@@ -470,7 +262,7 @@ body {
   color: white;
   border: none;
   padding: 0.5rem 1rem;
-  border-radius: 4px;
+  border-radius: 2rem;
   cursor: pointer;
 }
 .btn-save:disabled {
@@ -482,81 +274,34 @@ body {
 }
 
 /*Settings*/
-
 #Settings {
-  display: flex;
-  flex-direction: row;
-  color: #FFFFFF;
+  width: 65%;
+  margin: 14% 19% 0 19%;
+  text-align: center;
 }
 
-#LoginBox {
-  border: 2px solid #3E3F45;
-  border-radius: 5%;
-  width: 50%;
-  text-align: left;
-  padding: 2% 4%;
-  display: flex;
-  flex-direction: column;
+.SettingBox {
+    border: 2px solid #3E3F45;
+    border-radius: 3rem;
+    width: 30%;
+    padding: 2% 4%;
+    display: flex;
+    flex-direction: column;
 }
 
-#PasswordBox {
-  border: 2px solid #3E3F45;
-  border-radius: 5%;
-  width: 50%;
-  text-align: left;
-  padding: 2% 4%;
-  display: flex;
-  flex-direction: column;
-}
 
 #LoginContent {
-  text-align: center;
-  display: flex;
-  flex-direction: row;
-  color: #FFFFFF;
-  width: 100%;
+    display: flex;
+    flex-direction: row;
+    color: #FFFFFF;
+    gap: 10%;
 }
+
 
 h4 {
-  text-align: center;
-  font-size: 1.2em;
-  margin-bottom: 10px;
-}
-
-h5 {
   text-align: left;
   font-size: 1.2em;
   color: #E5E5E5;
-  margin-bottom: 10px;
-}
-
-h5 input {
-  margin-left: 2%;
-  background-color: #3E3F45;
-  color: #FFFFFF;
-  border: none;
-  padding: 5px;
-  border-radius: 4px;
-  width: 50%;
-}
-
-.button {
-  text-align: center;
-  margin-top: 10px;
-}
-
-button {
-  padding: 8px 16px;
-  font-weight: bold;
-  color: white;
-  background-color: #3E3F45;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #313335;
 }
 
 #ErrorNotification,
@@ -568,4 +313,173 @@ button:hover {
 #ErrorNotification p,
 #PasswordErrorNotification p {
   margin: 4px 0;
+}
+
+/* SingUpIn style */
+  
+.SingUpIn-Container {
+    background-color: #3E3F45;
+    border-radius: 3rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    position: relative;
+    overflow: hidden;
+    width: 45%;
+    height: 35rem;
+    margin: 12.3% auto;
+}
+
+.SingUpIn-Container p{
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.3px;
+    margin: 20px 0;
+    color:#eee
+}
+
+.SingUpIn-Container span{
+    font-size: 12px;
+}
+
+.SingUpIn-Container a{
+    color: #333;
+    font-size: 13px;
+    text-decoration: none;
+    margin: 15px 0 10px;
+}
+
+button {
+    background-color: #ce962f;
+    color: #fff;
+    font-size: 13px;
+    padding: 3% 10%;
+    border: 1px solid transparent;
+    border-radius: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: 1rem;
+    cursor: pointer;
+}
+
+button.hidden{
+    background-color: transparent;
+    border-color: #fff;
+}
+
+.SingUpIn-Container form{
+    background-color: #3E3F45;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    height: 100%;
+}
+
+
+.form-container{
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+}
+
+.sign-in{
+    left: 0;
+    width: 50%;
+    z-index: 2;
+}
+
+.SingUpIn-Container.active .sign-in{
+    transform: translateX(100%);
+}
+
+.sign-up{
+    left: 0;
+    width: 50%;
+    opacity: 0;
+    z-index: 1;
+}
+
+.SingUpIn-Container.active .sign-up{
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+    animation: move 0.6s;
+}
+
+@keyframes move{
+    0%, 49.99%{
+        opacity: 0;
+        z-index: 1;
+    }
+    50%, 100%{
+        opacity: 1;
+        z-index: 5;
+    }
+}
+
+.toggle-container{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: all 0.6s ease-in-out;
+    border-radius: 150px 0 0 100px;
+    z-index: 1000;
+}
+
+.SingUpIn-Container.active .toggle-container{
+    transform: translateX(-100%);
+    border-radius: 0 150px 100px 0;
+}
+
+.toggle{
+    background-color: #cca762;
+    height: 100%;
+    background: linear-gradient(to right, #ce962f, #ce962f);
+    color: #fff;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: all 0.6s ease-in-out;
+}
+
+.SingUpIn-Container.active .toggle{
+    transform: translateX(50%);
+}
+
+.toggle-panel{
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 30px;
+    text-align: center;
+    top: 0;
+    transform: translateX(0);
+    transition: all 0.6s ease-in-out;
+}
+
+.toggle-left{
+    transform: translateX(-200%);
+}
+
+.SingUpIn-Container.active .toggle-left{
+    transform: translateX(0);
+}
+
+.toggle-right{
+    right: 0;
+    transform: translateX(0);
+}
+
+.SingUpIn-Container.active .toggle-right{
+    transform: translateX(200%);
 }
