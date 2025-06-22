@@ -1,5 +1,21 @@
 /*General*/
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+.rotate-warning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #1B1C21;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 2rem;
+}
 
 body {
   font-family: "Roboto", sans-serif;
@@ -34,6 +50,7 @@ h4 {
   font-size: 1.2em;
   color: #E5E5E5;
 }
+
 /*Header css*/
 header {
   position: fixed;
@@ -168,10 +185,11 @@ li:hover {border-bottom: 4px solid #ce962f ;}
 }
 
 .assigned-user {
-  margin-left: 5.5rem;
-  font-size: 0.85rem;
-  color: #8d8d8d;
-  font-weight: 500;
+    font-size: 0.85rem;
+    color: #8d8d8d;
+    font-weight: 500;
+    text-align: right;
+    margin-right: 3%;
 }
 
 .info-icon {
@@ -237,12 +255,19 @@ li:hover {border-bottom: 4px solid #ce962f ;}
   font-weight: 600;
   margin-left: 0.3rem;
 }
-.detail .deadline {
-  margin-left: 0.3rem;
-  color: #8d8d8d;
-  font-weight: 500;
-  font-size: 0.85rem;
+.detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
+.detail .deadline {
+    margin-left: 3%;
+    color: #8d8d8d;
+    font-weight: 500;
+    font-size: 0.85rem;
+    text-align: left;
+}
+
 
 .panel-header {
   display: flex;
@@ -306,7 +331,7 @@ li:hover {border-bottom: 4px solid #ce962f ;}
   overflow: hidden;
   width: 45%;
   height: 35rem;
-  margin: 12.3% auto;
+  margin: 8.8% auto;
 }
 
 .SingUpIn-Container p{
@@ -452,3 +477,174 @@ button.hidden{
 }
 
 .SingUpIn-Container.active .toggle-right{transform: translateX(200%);}
+
+
+@media screen and (min-width: 2000px) {
+  .SingUpIn-Container {
+    background-color: #3E3F45;
+    border-radius: 3rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    position: relative;
+    overflow: hidden;
+    width: 45%;
+    height: 45rem;
+    margin: 10.5% auto;
+}
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 8rem;
+    background-color: #3E3F45;
+    font-family: "Roboto", sans-serif;
+    z-index: 1000;
+}
+li {
+    margin-right: 2em;
+    font-size: 1.8em;
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+#User p {
+    font-size: 1.5em;
+    padding: 0;
+    margin-right: 1rem;
+    color: black;
+}
+#User img {
+    height: 2rem;
+    padding-top: 15%;
+}
+.slide-panel {
+    position: fixed;
+    margin-top: 2%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #3e3f45;
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+    overflow: hidden;
+    z-index: 1000;
+}
+h4 {
+    text-align: center;
+    font-size: 1.5em;
+    color: #E5E5E5;
+}
+.card.issue-card {
+    background: #3e3f45;
+    border-radius: 1.5rem;
+    padding: 1rem;
+    width: 10%;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+.config-item {
+    padding: 0.7rem;
+    background: #fff;
+    color: #000;
+    border-radius: 2rem;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+    width: 22%;
+}
+.info-icon {
+    position: absolute;
+    bottom: 10%;
+    right: 6%;
+    width: 9%;
+    cursor: pointer;
+}
+#Settings {
+    width: 65%;
+    margin: 15.2% 0% 0 22%;
+    text-align: center;
+}
+input {
+    background-color: #eee;
+    border: none;
+    margin: 2% 0;
+    padding: 3%;
+    font-size: 18px;
+    border-radius: 1rem;
+    width: 90%;
+    outline: none;
+}
+button {
+    background-color: #ce962f;
+    color: #fff;
+    font-size: 15px;
+    padding: 3% 10%;
+    border: 1px solid transparent;
+    border-radius: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: 1em;
+    cursor: pointer;
+}
+.dashboard-container {
+    margin: 7% 4.4%;
+}
+}
+
+@media screen and (max-width: 1000px) {
+  .SingUpIn-Container {
+    background-color: #3E3F45;
+    border-radius: 3rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    position: relative;
+    overflow: hidden;
+    width: 75%;
+    height: 22em;
+    margin: 2.8% auto;
+}
+#Logo {
+    width: 18%;
+    height: 18%;
+    padding-top: 0.5%;
+    text-align: justify;
+}
+h4 {
+    text-align: center;
+    font-size: 0.8em;
+    color: #E5E5E5;
+    margin-bottom: 0;
+}
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5rem;
+    background-color: #3E3F45;
+    font-family: "Roboto", sans-serif;
+    z-index: 1000;
+}
+input {
+    background-color: #eee;
+    border: none;
+    margin: 2% 0;
+    padding: 3%;
+    font-size: 13px;
+    border-radius: 1rem;
+    width: 90%;
+    outline: none;
+}
+#Settings {
+    width: 65%;
+    margin: 12% 0% 0 18%;
+    text-align: center;
+}
+.SettingBox {
+    border: 2px solid #3E3F45;
+    border-radius: 3rem;
+    width: 35%;
+    padding: 2% 4%;
+    display: flex;
+    flex-direction: column;
+}
+}
