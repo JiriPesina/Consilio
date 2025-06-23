@@ -20,11 +20,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
-    # Djoser autentizace
     path('api/v1/auth/', include('djoser.urls')),
     path('api/v1/auth/', include('djoser.urls.authtoken')),
-
-    # Vlastní API
     path('api/v1/', include('Redmine.urls')),
 ]

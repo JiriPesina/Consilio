@@ -2,42 +2,17 @@
   <div v-if="initialized" class="dashboard-container">
     <div class="cards-container">
       <!-- Project Cards -->
-      <div
-        v-for="proj in selectedProjects"
-        :key="`proj-${proj.id}`"
-        class="card issue-card project-card"
-      >
-        <h3>
-          {{ proj.name }}
-          <img
-            v-if="proj.parent_id"
-            :src="ParentIcon"
-            alt="Má rodičovský projekt"
-            class="icon-parent"
-          />
-        </h3>
-        <draggable
-          class="issue-list"
-          :list="projectIssues[proj.id]"
-          :group="{ name: 'issues', pull: 'clone', put: true }"
-          :clone="cloneIssue"
-          :sort="false"
-          item-key="id"
-          @add="onProjectDropBack(proj, $event)"
-        >
+      <div v-for="proj in selectedProjects" :key="`proj-${proj.id}`"class="card issue-card project-card">
+        <h3>{{ proj.name }}<img v-if="proj.parent_id" :src="ParentIcon" alt="Má rodičovský projekt" class="icon-parent"/></h3>
+        <draggable class="issue-list" :list="projectIssues[proj.id]" :group="{ name: 'issues', pull: 'clone', put: true }" :clone="cloneIssue" :sort="false" item-key="id" @add="onProjectDropBack(proj, $event)">
           <template #item="{ element }">
             <div class="issue-item" :class="{ assigned: isNewAssignment(element) }">
-              <span
-                class="issue-pill"
-                :style="{ width: (element.completion_percentage || 0) + '%' }"
-              />
+              <span class="issue-pill" :style="{ width: (element.completion_percentage || 0) + '%' }"/>
               <div class="issue-text">
                 <div class="title">{{ element.name }}</div>
                 <div class="detail">
                   <span class="deadline">{{ formatDate(element.deadline) }}</span>
-                  <span v-if="element.assigned_username" class="assigned-user">
-                    {{ element.assigned_username }}
-                  </span>
+                  <span v-if="element.assigned_username" class="assigned-user">{{ element.assigned_username }}</span>
                   <span v-else class="unassigned-dot" />
                 </div>
               </div>
@@ -47,47 +22,21 @@
       </div>
 
       <!-- User Cards -->
-      <div
-        v-for="user in selectedUsers"
-        :key="`user-${user.redmine_id}`"
-        class="card issue-card user-card"
-      >
+      <div v-for="user in selectedUsers" :key="`user-${user.redmine_id}`" class="card issue-card user-card">
         <h3>{{ user.username }}</h3>
-        <!-- přidána třída drop-area, aby prázdné karty měly plochu pro drop -->
-        <draggable
-          class="issue-list drop-area"
-          :list="assignments[user.redmine_id]"
-          :group="{ name: 'issues', pull: true, put: true }"
-          item-key="id"
-          @add="onAssign(user, $event)"
-          @remove="onUnassign(user, $event)"
-        >
+        <draggable class="issue-list drop-area" :list="assignments[user.redmine_id]" :group="{ name: 'issues', pull: true, put: true }" item-key="id" @add="onAssign(user, $event)" @remove="onUnassign(user, $event)">
           <template #item="{ element }">
             <div class="issue-item dragging-visible">
-              <span
-                class="issue-pill"
-                :style="{ width: (element.completion_percentage || 0) + '%' }"
-              />
+              <span class="issue-pill" :style="{ width: (element.completion_percentage || 0) + '%' }"/>
               <div class="issue-text">
-                <div class="title">
-                  {{ element.name }}
-                  <img
-                    v-if="element.project_parent_id"
-                    :src="ParentIcon"
-                    alt="Project má rodiče"
-                    class="icon-parent"
-                  />
+                <div class="title">{{ element.name }} 
+                  <img v-if="element.project_parent_id" :src="ParentIcon" alt="Project má rodiče" class="icon-parent"/>
                 </div>
                 <div class="detail">
                   <span class="deadline">{{ formatDate(element.deadline) }}</span>
                 </div>
               </div>
-              <img
-                :src="iconInfo"
-                alt="info"
-                class="info-icon"
-                @click="openIssue(element.id)"
-              />
+              <img :src="iconInfo" alt="info" class="info-icon" @click="openIssue(element.id)"/>
             </div>
           </template>
         </draggable>
@@ -95,52 +44,22 @@
     </div>
 
     <!-- Slide-up config panel, pouze pro superusera -->
-    <div
-      v-if="isSuperuser"
-      ref="panel"
-      class="slide-panel"
-      :style="{ top: panelTop + 'px' }"
-      @mousedown.prevent="onDragStart"
-      @touchstart.prevent="onDragStart"
-    >
+    <div v-if="isSuperuser" ref="panel" class="slide-panel" :style="{ top: panelTop + 'px' }" @mousedown.prevent="onDragStart" @touchstart.prevent="onDragStart">
       <div class="panel-header">
-        <button
-          v-if="hasNewAssignments"
-          class="btn-save"
-          @click="saveAssignments"
-          :disabled="saving"
-        >
-          {{ saving ? 'Ukládám...' : 'Uložit změny' }}
-        </button>
+        <button v-if="hasNewAssignments" class="btn-save" @click="saveAssignments" :disabled="saving">{{ saving ? 'Ukládám...' : 'Uložit změny' }}</button>
       </div>
       <div ref="handle" class="handle"></div>
       <div class="panel-content">
         <div class="config-section">
           <h4>Projekty</h4>
           <div class="config-list">
-            <div
-              v-for="p in projects"
-              :key="p.id"
-              class="config-item"
-              :class="{ selected: selectedProjectsMap[p.id] }"
-              @click="toggleProject(p)"
-            >
-              {{ p.name }}
-            </div>
+            <div v-for="p in projects" :key="p.id" class="config-item" :class="{ selected: selectedProjectsMap[p.id] }" @click="toggleProject(p)">{{ p.name }}</div>
           </div>
         </div>
         <div class="config-section">
           <h4>Zaměstnanci</h4>
           <div class="config-list">
-            <div
-              v-for="u in users"
-              :key="u.redmine_id"
-              class="config-item"
-              :class="{ selected: selectedUsersMap[u.redmine_id] }"
-              @click="toggleUser(u)"
-            >
-              {{ u.username }}
-            </div>
+            <div v-for="u in users" :key="u.redmine_id" class="config-item" :class="{ selected: selectedUsersMap[u.redmine_id] }" @click="toggleUser(u)">{{ u.username }}</div>
           </div>
         </div>
       </div>
@@ -218,8 +137,6 @@ export default {
         this.projects = pRes.data
         this.users = uRes.data
         this.issues = iRes.data
-
-        // při každém načtení vždy prázdné (slide-panel si uživatel sám vyplní)
         this.selectedProjects = []
         this.selectedUsers = []
 
@@ -285,9 +202,6 @@ export default {
     onAssign(user, evt) {
       const moved = evt.item.__vue__?.element || evt.clone
       moved.assigned_username = user.username
-    },
-    onUnassign(user, evt) {
-      // tu můžeš řešit odřazení úkolu zpět na projekt, pokud potřebuješ
     },
     onProjectDropBack(proj, evt) {
       const dropped = evt.clone

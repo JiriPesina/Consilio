@@ -135,24 +135,20 @@ export default {
       if (this.errors.length) return
 
       try {
-        // 1) Přihlášení a získání tokenu
         const response = await axios.post('/api/v1/auth/token/login/', {
           username: this.username,
           password: this.password
         })
         const token = response.data.auth_token
 
-        // 2) Uložení do store a sessionStorage
         this.$store.commit('setToken', token)
         this.$store.commit('setUsername', this.username)
         axios.defaults.headers.common['Authorization'] = 'Token ' + token
 
-        // 3) Načtení detailů přihlášeného uživatele
         const meRes = await axios.get('/api/v1/users/me/')
         this.$store.commit('setIsSuperuser', meRes.data.is_superuser)
         this.$store.commit('setRedmineId', meRes.data.redmine_id)
 
-        // 4) Přesměrování na Dashboard
         this.$router.push({ name: 'Dashboard' })
       } catch (error) {
         if (error.response && error.response.data) {
