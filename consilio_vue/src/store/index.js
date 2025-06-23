@@ -76,4 +76,3 @@ window.addEventListener('beforeunload', () => store.commit('removeToken'))
 export default store
 
 
-
