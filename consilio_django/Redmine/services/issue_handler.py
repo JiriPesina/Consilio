@@ -13,7 +13,7 @@ def sync_issues(api_key):
             Issue.objects.update_or_create(
                 id=item["id"],
                 defaults={
-                    "project_id_id": item["project"]["id"],
+                    "project_id": item["project"]["id"],
                     "name": item["subject"],
                     "status": item["status"]["name"],
                     "priority": item["priority"]["name"],

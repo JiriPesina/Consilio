@@ -18,7 +18,7 @@
 
     <!-- Přihlášení -->
     <div class="form-container sign-in">
-      <form @submit.prevent="submitForm">
+      <form @submit.prevent="submitFormSingIn">
         <h1>Přihlášení</h1>
         <input type="text" placeholder="Uživatelské jméno" v-model="username" />
         <input type="password" placeholder="Heslo" v-model="password" />
@@ -128,7 +128,7 @@ export default {
       }
     },
 
-    async submitForm() {
+    async submitFormSingIn() {
       this.errors = []
       if (!this.username) this.errors.push('Chybí uživatelské jméno')
       if (!this.password) this.errors.push('Chybí heslo')
