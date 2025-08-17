@@ -76,38 +76,49 @@ export default {
     },
 
     async submitFormSingUp() {
+      // Vymazání předchozích chyb
       this.errors = []
+      // Validace inputů.
       if (!this.usernameSingUp)   this.errors.push('Chybí uživatelské jméno')
       if (!this.passwordSingUp)   this.errors.push('Chybí heslo')
       if (this.passwordSingUp !== this.password2SingUp) this.errors.push('Hesla se neshodují')
       if (!this.emailSingUp)      this.errors.push('Chybí email')
       if (!this.API_Key)          this.errors.push('Chybí klíč API')
+      // Pokud chybí některý z povinných inputů, ukončíme funkci
       if (this.errors.length) return
 
       try {
+        // Vytvoříme objekt s daty, která očekává backend při registraci uživatele
         const formData = {
           username: this.usernameSingUp,
           password: this.passwordSingUp,
           email:    this.emailSingUp,
           API_Key:  this.API_Key
         }
-
+        // Odeslání dat na endpoint pro registraci /api/v1/users/create/
         const signupResponse = await axios.post('/api/v1/users/create/', formData)
 
+        // Registrace byla úspěšná, pokud server vrátí HTTP 201 nebo ID nově vytvořeného uživatele.
         if (signupResponse.status === 201 || signupResponse.data.id) {
+          // Informativní hláška s potvrzením úspečné registrace pro uživatele
           toast.success('Účet byl úspěšně vytvořen! Můžete se přihlásit.', {
             autoClose: 3000
           })
+           // Vyprázdění všech inputů
           this.usernameSingUp = ''
           this.passwordSingUp = ''
           this.password2SingUp = ''
           this.emailSingUp = ''
           this.API_Key = ''
+          // Přepnutí registrace na přihlašovací obrazovku
           this.activateSignIn()
+
         } else {
+          // Informativní hláška, v případě že server nepotvrdil vytvoření účtu
           this.errors.push('Server nevrátil potvrzení. Zkuste to znovu.')
         }
       } catch (error) {
+        // Pokud server vrátí chyby, projdeme každé pole a zobrazíme je uživateli
         if (error.response && error.response.data) {
           const data = error.response.data
           if (data.non_field_errors) {
@@ -122,6 +133,7 @@ export default {
             }
           }
         } else {
+          // Chyba při spojení – backend není dostupný
           this.errors.push('Nepodařilo se spojit se serverem.')
           console.error(error)
         }
@@ -129,28 +141,35 @@ export default {
     },
 
     async submitFormSingIn() {
+      // Vymazání předchozích chyb
       this.errors = []
+      // Validace inputů.
       if (!this.username) this.errors.push('Chybí uživatelské jméno')
       if (!this.password) this.errors.push('Chybí heslo')
       if (this.errors.length) return
 
       try {
+        // Přihlášení uživatele a získání autentizačního tokenu z backendu
         const response = await axios.post('/api/v1/auth/token/login/', {
           username: this.username,
           password: this.password
         })
         const token = response.data.auth_token
 
+        // Uložení tokenu a uživatelského jména do Vuex store + nastavení tokenu do hlaviček axiosu
         this.$store.commit('setToken', token)
         this.$store.commit('setUsername', this.username)
         axios.defaults.headers.common['Authorization'] = 'Token ' + token
-
+        
+        // Načtení detailů přihlášeného uživatele, pro získání pravomocí a Redmine ID
         const meRes = await axios.get('/api/v1/users/me/')
         this.$store.commit('setIsSuperuser', meRes.data.is_superuser)
         this.$store.commit('setRedmineId', meRes.data.redmine_id)
 
+        // Pokud nenastala chyba přesměrujeme uživatele na Dashboard
         this.$router.push({ name: 'Dashboard' })
       } catch (error) {
+        // V případě neplatných údajů z backendu zobrazíme konkrétní chybové hlášky.
         if (error.response && error.response.data) {
           const data = error.response.data
           if (data.non_field_errors) {
@@ -172,7 +191,6 @@ export default {
     }
   }
 }
-
 </script>
 
 

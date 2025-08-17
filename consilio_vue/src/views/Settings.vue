@@ -71,6 +71,7 @@ export default {
     await this.fetchCurrentUser()
   },
   methods: {
+    // Načte aktuální údaje přihlášeného uživatele z backendu. Používá GET /api/v1/users/me/, aby naplnila formulář výchozími hodnotam
     async fetchCurrentUser() {
       try {
         const response = await axios.get('/api/v1/users/me/')
@@ -78,14 +79,18 @@ export default {
         this.email = response.data.email
         this.API_Key = response.data.API_Key || ''
       } catch (err) {
+        // V případě chyby při načítání zobrazí zprávu a vypíše chybu do konzole
         console.error('Chyba při načítání uživatele:', err)
         toast.error('Nepodařilo se načíst data uživatele.')
       }
     },
 
+    // Odeslání změny uživatelských údajů (jméno, e‑mail, API klíč).
     async submitFormSettings() {
+      // Vymaže předchozí chybové hlášky
       this.infoErrors = []
 
+      // Validace inputů
       if (!this.username) {
         this.infoErrors.push('Uživatelské jméno je povinné')
       }
@@ -95,6 +100,7 @@ export default {
       if (!this.API_Key) {
         this.infoErrors.push('API klíč je povinný (pro ověření v Redmine)')
       }
+       // Pokud existují validační chyby, ukončíme funkci a zobrazíme je uživateli
       if (this.infoErrors.length) {
         return
       }
@@ -105,15 +111,19 @@ export default {
           email: this.email,
           API_Key: this.API_Key,
         }
+        // Odesílá požadavek na update uživatelských údajů
         const response = await axios.put('/api/v1/users/update/', payload)
-
+        
+        // Úspěch: server vrátil HTTP 200 a příznak success – zobrazí toast a znovu načte údaje
         if (response.status === 200 && response.data.success) {
           toast.success('Údaje byly úspěšně aktualizované')
           await this.fetchCurrentUser()
         } else {
+          // Pokud server nepotvrdí validitu údajů (např. nesoulad s Redmine)
           toast.error('Nové údaje nesouhlasí s údaji v Redmine')
         }
       } catch (error) {
+        // Zpracování odpovědi se stavem 400 (bad request) – obsahuje validační chyby z backendu
         if (error.response && error.response.status === 400) {
           const data = error.response.data
           if (data.non_field_errors) {
@@ -129,15 +139,19 @@ export default {
             }
           }
         } else {
+          // Pokud není dostupný server, vypíše chybu do konzole a zobrazí toast
           console.error(error)
           toast.error('Nepodařilo se spojit se serverem')
         }
       }
     },
 
+    // Odeslání změny hesla.
     async submitPasswordChange() {
+      // Vymažeme dřívější chyby v heslové sekci
       this.passwordErrors = []
 
+       // Validace povinných polí
       if (!this.currentPassword) {
         this.passwordErrors.push('Aktuální heslo je povinné')
       }
@@ -150,6 +164,7 @@ export default {
       if (this.newPassword && this.confirmNewPassword && this.newPassword !== this.confirmNewPassword) {
         this.passwordErrors.push('Nové heslo a potvrzení se musí shodovat')
       }
+       // Pokud existují chyby, ukončíme funkci
       if (this.passwordErrors.length) {
         return
       }
@@ -159,18 +174,22 @@ export default {
           current_password: this.currentPassword,
           new_password: this.newPassword
         }
+        // Odeslání požadavku na změnu hesla pomocí
         const response = await axios.put('/api/v1/users/change_password/', payload)
 
+        // Úspěch – server vrátil stav 200 a příznak success
         if (response.status === 200 && response.data.success) {
           toast.success('Heslo bylo úspěšně změněno')
           this.currentPassword = ''
           this.newPassword = ''
           this.confirmNewPassword = ''
         } else {
+           // Pokud server odmítne změnu kvůli špatnému aktuálnímu heslu
           toast.error('Aktuální heslo nesouhlasí')
           this.passwordErrors.push('Aktuální heslo nesouhlasí')
         }
       } catch (error) {
+        // Zpracování chybového stavu 400 – vypíše detailní zprávy
         if (error.response && error.response.status === 400) {
           const data = error.response.data
           if (data.non_field_errors) {

@@ -21,7 +21,7 @@ class Issue(models.Model):
     type = models.CharField(max_length=15)
     status = models.CharField(max_length=15)
     priority = models.CharField(max_length=10)
-    assigned = models.ForeignKey(settings.AUTH_USER_MODEL,to_field='redmine_id',db_column='assigned_id',related_name='assigned_issues',on_delete=models.SET_NULL,null=True, blank=True)
+    assigned = models.PositiveIntegerField(db_column='assigned_id',null=True, blank=True,help_text='Redmine ID uživatele přiřazeného k úloze')
     completion_percentage = models.DecimalField(max_digits=5, decimal_places=2)
     deadline = models.DateField(null=True, blank=True)
 
