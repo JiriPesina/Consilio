@@ -7,6 +7,7 @@ User = get_user_model()
 
 
 class IssueSerializer(serializers.ModelSerializer):
+    # Přidáváme virtuální pole project_parent_id, které přečte parent_id z navázaného projektu.
     project_parent_id = serializers.IntegerField(
         source='project_id.parent_id',
         read_only=True
@@ -29,6 +30,7 @@ class IssueSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.ModelSerializer):
+    # Serializér vnoří všechny úkoly patřící k projektu pomocí IssueSerializer
     issues = IssueSerializer(many=True)
     parent_id = serializers.IntegerField(read_only=True)
 
@@ -47,11 +49,9 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'email', 'redmine_id','is_superuser']
 
-
+#  Serializer pro registraci nového uživatele.
 class UserCreateSerializer(serializers.ModelSerializer):
-    """
-    Serializer pro registraci nového uživatele.
-    """
+    
     password = serializers.CharField(write_only=True)
 
     class Meta:
@@ -59,6 +59,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
         fields = ['username', 'email', 'password', 'API_Key']
 
     def validate(self, data):
+        #  Ověřuje zadané údaje proti Redmine. Pokud API klíč nebo údaje nesedí, vyvolá chybu.
         api_key = data.get('API_Key')
         username = data.get('username')
         password = data.get('password')

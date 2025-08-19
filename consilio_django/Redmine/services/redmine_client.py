@@ -1,5 +1,6 @@
 import requests
 
+#modul obsahuje implementaci jednoduchého klienta pro komunikaci se serverem Redmine.
 class RedmineClient:
     def __init__(self, api_key: str):
         self.api_key = api_key
@@ -9,6 +10,7 @@ class RedmineClient:
             "Content-Type": "application/json",
         })
 
+    #Získá data z daného endpointu Redmine
     def fetch(self, endpoint: str):
         url = f"https://projects.olc.cz/{endpoint}.json"
         resp = self.session.get(url)

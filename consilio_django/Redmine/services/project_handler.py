@@ -2,6 +2,7 @@ from .redmine_client import RedmineClient
 from ..models import Project
 from django.db import transaction
 
+#ajišťuje synchronizaci projektů mezi systémem Redmine a lokální databází Django
 def sync_projects(api_key):
     client = RedmineClient(api_key)
     data = client.fetch("projects")

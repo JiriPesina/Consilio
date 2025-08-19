@@ -78,13 +78,13 @@ export default {
     async submitFormSingUp() {
       // Vymazání předchozích chyb
       this.errors = []
-      // Validace inputů.
+      // Validace uživatelských inputů.
       if (!this.usernameSingUp)   this.errors.push('Chybí uživatelské jméno')
       if (!this.passwordSingUp)   this.errors.push('Chybí heslo')
       if (this.passwordSingUp !== this.password2SingUp) this.errors.push('Hesla se neshodují')
       if (!this.emailSingUp)      this.errors.push('Chybí email')
       if (!this.API_Key)          this.errors.push('Chybí klíč API')
-      // Pokud chybí některý z povinných inputů, ukončíme funkci
+      // Pokud chybí některý z povinných inputů, ukončíme funkci a zobrazíme chyby
       if (this.errors.length) return
 
       try {

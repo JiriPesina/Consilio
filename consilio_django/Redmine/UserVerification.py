@@ -1,6 +1,6 @@
 import requests
 
-# Ověří přihlašovací údaje do Redmine pomocí poskytnutého API klíče, uživatelského jména a hesla.
+# Ověření uživatelova API klíče vzhedem k Redmine.
 
 def verify_redmine_credentials(api_key: str, username: str, password: str) -> requests.Response:
     url = "https://projects.olc.cz/my/account.json"

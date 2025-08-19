@@ -124,11 +124,9 @@ export default {
     }
   },
   methods: {
-    // Synchronizace a načtení dat z Redmine
     async fetchAll() {
-      // Informuje uživatele, že synchronizace začala
+      // Informuje uživatele, že synchronizace začala a nastaví globální příznak načítání
       toast.info('Synchronizace dat zahájena.', { autoClose: 2000 })
-       // Nastaví globální příznak načítání (Vuex store)
       this.$store.commit('setIsLoading', true)
       try {
          // Spustí serverový proces pro přípravu pracovního prostoru
@@ -143,25 +141,20 @@ export default {
         this.projects = pRes.data
         this.users = uRes.data
         this.issues = iRes.data
-
         // Resetuje výběry projektů a uživatelů, aby odpovídaly nově načteným datům
         this.selectedProjects = []
         this.selectedUsers = []
-
-        // Pokud uživatel není superuser, předvybere se karta pouze jeho karta
+        // Pokud uživatel není superuser, předvybere se pouze jeho karta
         if (!this.isSuperuser) {
           const me = this.users.find(u => u.redmine_id === this.currentRedmineId)
           if (me) this.selectedUsers = [me]
         }
-
         // Zorganizuje úkoly do sloupců podle projektů – připraví `projectIssues`
         this.projectIssues = {}
         this.issues.forEach(issue => {
           issue.initialAssigned = Boolean(issue.assigned) // poznámka, zda byl úkol přiřazen už při načtení
           ;(this.projectIssues[issue.project_id] ||= []).push(issue)
         })
-
-        // uživatelské karty
         this.assignments = {}
         this.users.forEach(u => {
           this.assignments[u.redmine_id] = []
@@ -241,7 +234,7 @@ export default {
     async saveAssignments() {
       this.saving = true
       toast.info('Ukládám změny...', { autoClose: 2000 })
-      // Připraví payload: seznam uživatelů s jejich redmine_id a ID úkolů, které jim byly přiřazeny
+      // Připraví  seznam uživatelů s jejich redmine_id a ID úkolů, které jim byly přiřazeny
       const payload = {
         assignments: this.selectedUsers.map(u => ({
           user_redmine_id: u.redmine_id,
